@@ -11,7 +11,7 @@ const ordersRoute = require("./routes/ordersRoutes");
 const cartRoute = require("./routes/cartRoutes");
 const reviewRoute = require("./routes/reviewRoutes");
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
 
