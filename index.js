@@ -22,7 +22,7 @@ app.use(cookieParser());
 
 const allowedOrigins = ['http://localhost:8080', 
                         'http://localhost:3000', 
-                        `http://192.168.1.104:3000`,
+                        'http://192.168.1.104:3000',
                         'https://spottrend-nine.vercel.app', 
                         'https://www.trendspotke.com', 
                         // 'https://urbankicks.netlify.app'
