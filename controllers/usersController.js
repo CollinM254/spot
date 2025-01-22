@@ -50,8 +50,6 @@
 //     }
 // };
 
-
-
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models/usersModel");
@@ -95,7 +93,14 @@ const registerUser = async (req, res) => {
     const token = jwt.sign({ userId: savedUser._id }, "your-secret-key", {
       expiresIn: "2h",
     });
-    res.cookie("jwt", token, { httpOnly: true });
+    // In the registerUser function, when setting the cookie after generating the JWT token
+    res.cookie("jwt", token, {
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      secure: true, // Ensures cookies are sent only over HTTPS (important for production)
+      sameSite: "None", // Allows cross-origin cookies
+      maxAge: 3600000, // Optional: Set cookie expiration (1 hour)
+    });
+
     res
       .status(201)
       .json({ message: "User registered successfully", user: savedUser });
@@ -106,9 +111,6 @@ const registerUser = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
-
-
-
 
 // const registerUser = async (req, res) => {
 //     const {
@@ -188,7 +190,11 @@ const loginUser = async (req, res) => {
     });
 
     // Send the token as a cookie
-    res.cookie("jwt", token, { httpOnly: false, secure: true });
+    res.cookie("jwt", token, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "None",
+    });
 
     // You can also send the token in the response if needed
     // res.status(200).json({ message: 'Login successful', token });
